@@ -19,6 +19,9 @@ If you are developing a production application, we recommend using TypeScript wi
 
 A MERN stack application where users can post books they've read and leave short reviews.
 
+# Deployed
+https://book-review-board-frontend.vercel.app/
+
 Repositories
 
 Frontend: https://github.com/AyishaFahma/Book_Review_Board_frontend
