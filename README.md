@@ -100,12 +100,23 @@ npm run dev
 ## Screenshots
 
 Home page
-
+<img width="1920" height="1080" alt="homepage png" src="https://github.com/user-attachments/assets/6a0a4074-2165-412e-b6dd-56149a668b43" />
 
 Auth Page
+<img width="1920" height="1080" alt="register png" src="https://github.com/user-attachments/assets/23f3dca4-b85f-4d1d-95f6-53f738cae41a" />
+<img width="1920" height="1080" alt="login png" src="https://github.com/user-attachments/assets/b5735eee-933d-4e67-ac43-cc1499738c7e" />
+<img width="1920" height="1080" alt="login2 png" src="https://github.com/user-attachments/assets/accceed2-a925-4a83-bd65-26c450ad7f36" />
 
 Add Book Page
+<img width="1920" height="1020" alt="addbook png" src="https://github.com/user-attachments/assets/64a9ffef-b960-4c74-aea0-9c015f12b4f5" />
 
 viewBook Page
+<img width="1920" height="1080" alt="viewbook png" src="https://github.com/user-attachments/assets/e086d8a3-70bc-496b-b74c-38c5b8b1c9ea" />
+
+<img width="1920" height="1020" alt="viewbookreview png" src="https://github.com/user-attachments/assets/c39a459c-3e29-482b-b281-eda25113de52" />
+
 
 Add Review Page
+<img width="1920" height="1020" alt="addreview png" src="https://github.com/user-attachments/assets/84ed0890-dea0-4ea6-846d-31a90caf5709" />
+
+
