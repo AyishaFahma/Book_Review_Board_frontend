@@ -26,7 +26,7 @@ function App() {
   
       <Route path='/all-books' element={<Allbook/>} />
   
-      <Route path='/view-book' element={<Viewbook/>} />
+      <Route path='/view-book/:id' element={<Viewbook/>} />
   
       <Route path='/add-book' element={<Addbook/>} />
 

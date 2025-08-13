@@ -1,6 +1,75 @@
 import React from 'react'
+import { addReviewApi, getABookApi } from '../services/allApi'
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Viewbook() {
+
+  const [viewbook, setviewBook] = useState({})
+
+  const [token, settoken] = useState("")
+
+  //review
+  const [review, setreview] = useState({
+    rating : "",
+    comment : ""
+  })
+  //console.log(review);
+  
+
+ const {id} = useParams()
+ //console.log(id);
+ 
+
+  //to view a single book
+  const viewBook = async(id)=>{
+
+    const result = await getABookApi(id)
+    console.log(result);
+    setviewBook(result.data)
+
+  }
+  //console.log(viewbook);
+
+
+  const handleSubmit = async()=>{
+
+    const {rating , comment} = review
+    console.log(rating , comment);
+
+    if(!rating || !comment){
+      toast.warning('Please fill the form Completely')
+    }
+    else{
+
+      //create reqheader
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+
+      const result = await addReviewApi({rating , comment} , reqHeader )
+      console.log(result);
+      
+    }
+    
+  }
+  
+
+
+  useEffect( ()=>{
+    viewBook(id)
+
+    if(sessionStorage.getItem("token")){
+      const tok = sessionStorage.getItem("token")
+      settoken(tok)
+    }
+  },[])
+
+
+
+
   return (
     <>
       {/* details of book */}
@@ -8,13 +77,13 @@ function Viewbook() {
         <div className="row border p-md-4 p-3 rounded shadow">
           {/* book image */}
           <div className="col-md-5">
-            <img src="https://lh3.googleusercontent.com/proxy/YVJtQFtlysxRzcg8cm4B-Y8K6_6JpOR9qSYeoo_o3HPL2cwipGxslIk57yS9bhyqtaIgxFOm7Rx2b2cRJneIdkYTWAmciyLktaS0HI8tnLSopgHP653bkylKz38kZHvXtIYJT67QygOa" alt="no image" style={{ width: '100%', height: '500px' }} />
+            <img src={viewbook?.image} alt="no image" style={{ width: '100%', height: '500px' }} />
           </div>
           {/* book title , author, description */}
           <div className="col-md-7 d-flex align-items-center flex-column p-2">
-            <h2 className='my-3 fw-bolder text-center'>Harry Potter 2:and the Chamber of Secrets</h2>
-            <h4 className='text-center'>Author : JK ROWLING</h4>
-            <p className='mt-4' style={{ textAlign: 'justify' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit a odio culpa magni voluptatibus animi cumque modi, commodi quam numquam dolore vel aliquid iusto nemo autem quae soluta sed laborum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ad similique maxime enim, soluta velit commodi corrupti nam. Mollitia eligendi velit omnis perspiciatis unde veritatis accusamus dignissimos quibusdam officia odio! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia eveniet aliquam ipsam, accusantium aliquid neque vitae expedita quos incidunt necessitatibus animi nesciunt adipisci, dolorum placeat porro architecto minus amet consequuntur?</p>
+            <h2 className='my-3 fw-bolder text-center'>{viewbook?.title}</h2>
+            <h4 className='text-center'>{viewbook?.author}</h4>
+            <p className='mt-4' style={{ textAlign: 'justify' }}>{viewbook?.description}</p>
 
 
 
@@ -27,7 +96,9 @@ function Viewbook() {
                   <h3 className='fw-medium'>Book Review</h3>
                 </div>
                 <div className="col-md-6">
-                  <button className='btn btn-secondary w-100 ' data-bs-toggle="modal" data-bs-target="#exampleModal">ADD REVIEW</button>
+
+                  {token && <button className='btn btn-secondary w-100 ' data-bs-toggle="modal" data-bs-target="#exampleModal">ADD REVIEW</button>}
+
                 </div>
               </div>
             </div>
@@ -51,10 +122,10 @@ function Viewbook() {
 
                     <form action="">
 
-                      <textarea placeholder='Enter comment' className='form-control my-3'></textarea>
+                      <textarea placeholder='Enter comment' className='form-control my-3' value={review.comment} onChange={(e)=>setreview({...review, comment:e.target.value})} ></textarea>
 
                       <input type="number" placeholder='Rating' min={1}
-                        max={5} className='form-control mb-3' />
+                        max={5} className='form-control mb-3'  value={review.rating} onChange={(e)=>setreview({...review, rating:e.target.value})}   />
 
 
                     </form>
@@ -62,7 +133,7 @@ function Viewbook() {
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-success">SUBMIT</button>
+                    <button type="button" className="btn btn-success"   onClick={handleSubmit}  >SUBMIT</button>
                   </div>
                 </div>
               </div>
@@ -116,6 +187,9 @@ function Viewbook() {
 
         </div>
       </div>
+
+      <ToastContainer theme='colored' position='top-center' autoClose={2000} />
+      
 
 
     </>

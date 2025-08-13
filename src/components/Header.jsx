@@ -1,7 +1,20 @@
 import React from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 function Header() {
+
+
+
+  const [token, setToken] = useState("")
+
+  useEffect(() => {
+    const storedToken = sessionStorage.getItem("token")
+    setToken(storedToken) // will be null if not found
+  }, [token])
+  
+
   return (
     <>
 
@@ -17,7 +30,7 @@ function Header() {
 
             <Link to={'/'} style={{textDecoration:'none'}}><li className='fw-bold fs-4 me-3 text-dark' >Home</li></Link>
 
-            <Link to={'/login'}><li className='me-3'><button className='btn btn-outline-secondary fw-bold text-dark'>Login</button></li></Link>
+            {!token && <Link to={'/login'}><li className='me-3'><button className='btn btn-outline-secondary fw-bold text-dark'>Login</button></li></Link>}
 
             <Link to={'/all-books'} style={{textDecoration:'none'}}><li className='fw-bold fs-4 me-3 text-dark'>Book</li></Link>
 
