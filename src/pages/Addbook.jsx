@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from '../components/Header'
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { addBookApi } from '../services/allApi';
@@ -81,6 +82,7 @@ function Addbook() {
 
   return (
     <>
+    <Header/>
 
       <div className="container my-5 px-3">
         <div className="row">

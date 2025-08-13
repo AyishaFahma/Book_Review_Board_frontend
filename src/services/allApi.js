@@ -32,6 +32,11 @@ export const getABookApi = async(id)=>{
 
 
 //api to add review
-export const addReviewApi = async(reqBody , reqHeader)=>{
-    return await commonApi('POST' , `${serverUrl}/add-review` , reqBody , reqHeader)
+export const addReviewApi = async(id , reqBody , reqHeader)=>{
+    return await commonApi('POST' , `${serverUrl}/add-review/${id}` , reqBody , reqHeader)
+}
+
+//api to get all review
+export const getAllReviewApi = async(id)=>{
+    return await commonApi('GET' , `${serverUrl}/view-review/${id}`)
 }

@@ -1,8 +1,12 @@
 import React from 'react'
+import Header from '../components/Header'
+
 
 function Landing() {
   return (
     <>
+
+    <Header/>
 
       <div className='container'>
         <div className='row p-md-5 gap-x-10'>

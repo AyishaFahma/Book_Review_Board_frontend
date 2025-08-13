@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import { loginApi, registerApi } from '../services/allApi';
+import Header from '../components/Header'
 
 function Auth({ register }) {
 
@@ -108,14 +109,10 @@ function Auth({ register }) {
   }
 
 
-
-
-
-
-
-
   return (
     <>
+
+    <Header/>
 
 
       <div className="container ">

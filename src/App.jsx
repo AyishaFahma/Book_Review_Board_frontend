@@ -6,7 +6,7 @@ import Auth from './pages/Auth'
 import Allbook from './pages/Allbook'
 import Viewbook from './pages/Viewbook'
 import Addbook from './pages/Addbook'
-import Header from './components/Header'
+
 
 function App() {
   
@@ -14,7 +14,7 @@ function App() {
   return (
     <>
 
-    <Header/>
+    
 
     <Routes>
 

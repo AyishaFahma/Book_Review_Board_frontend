@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from '../components/Header'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -40,6 +41,8 @@ function Allbook() {
 
   return (
     <>
+
+    <Header/>
 
       {/* add book button fo logined user */}
       <div className="container my-5">

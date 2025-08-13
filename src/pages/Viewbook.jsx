@@ -1,7 +1,8 @@
 import React from 'react'
-import { addReviewApi, getABookApi } from '../services/allApi'
+import Header from '../components/Header'
+import { addReviewApi, getABookApi, getAllReviewApi } from '../services/allApi'
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -13,18 +14,25 @@ function Viewbook() {
 
   //review
   const [review, setreview] = useState({
-    rating : "",
-    comment : ""
+    rating: "",
+    comment: ""
   })
   //console.log(review);
-  
-
- const {id} = useParams()
- //console.log(id);
  
+  //state to hold all reviews for a perticular book
+  const [allReviews, setallReviews] = useState([])
+
+
+  const navigate = useNavigate()
+
+  const { id } = useParams()
+  //console.log(id);
+
 
   //to view a single book
-  const viewBook = async(id)=>{
+  const viewBook = async (id) => {
+
+    getAllReview()
 
     const result = await getABookApi(id)
     console.log(result);
@@ -33,45 +41,76 @@ function Viewbook() {
   }
   //console.log(viewbook);
 
+  // to add review for a perticular book
+  const handleSubmit = async () => {
 
-  const handleSubmit = async()=>{
+    const { rating, comment } = review
+    console.log(rating, comment);
 
-    const {rating , comment} = review
-    console.log(rating , comment);
-
-    if(!rating || !comment){
+    if (!rating || !comment) {
       toast.warning('Please fill the form Completely')
     }
-    else{
+    else {
 
       //create reqheader
       const reqHeader = {
         "Authorization": `Bearer ${token}`
       }
 
-      const result = await addReviewApi({rating , comment} , reqHeader )
+      const result = await addReviewApi(id, { rating, comment }, reqHeader)
       console.log(result);
-      
+
+      if (result.status == 200) {
+        toast.success('Review Added Successfully')
+
+      }
+      else {
+        toast.error('Something went wrong')
+      }
+      setreview({
+        rating: "",
+        comment: ""
+      })
+
     }
+
+  }
+
+  //to get all reviews
+  const getAllReview = async()=>{
+
+    const result = await getAllReviewApi(id)
+    //console.log(result);
+
+    setallReviews(result.data)
     
   }
+  console.log(allReviews);
   
 
 
-  useEffect( ()=>{
+
+
+  useEffect(() => {
+
     viewBook(id)
 
-    if(sessionStorage.getItem("token")){
+    if (sessionStorage.getItem("token")) {
       const tok = sessionStorage.getItem("token")
       settoken(tok)
     }
-  },[])
+  }, [allReviews])
 
 
 
 
   return (
     <>
+
+    <Header/>
+
+
+    
       {/* details of book */}
       <div className="container my-5">
         <div className="row border p-md-4 p-3 rounded shadow">
@@ -122,10 +161,10 @@ function Viewbook() {
 
                     <form action="">
 
-                      <textarea placeholder='Enter comment' className='form-control my-3' value={review.comment} onChange={(e)=>setreview({...review, comment:e.target.value})} ></textarea>
+                      <textarea placeholder='Enter comment' className='form-control my-3' value={review.comment} onChange={(e) => setreview({ ...review, comment: e.target.value })} ></textarea>
 
                       <input type="number" placeholder='Rating' min={1}
-                        max={5} className='form-control mb-3'  value={review.rating} onChange={(e)=>setreview({...review, rating:e.target.value})}   />
+                        max={5} className='form-control mb-3' value={review.rating} onChange={(e) => setreview({ ...review, rating: e.target.value })} />
 
 
                     </form>
@@ -133,7 +172,7 @@ function Viewbook() {
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-success"   onClick={handleSubmit}  >SUBMIT</button>
+                    <button type="button" className="btn btn-success" onClick={handleSubmit}  >SUBMIT</button>
                   </div>
                 </div>
               </div>
@@ -166,13 +205,20 @@ function Viewbook() {
 
                     <tbody>
 
-                      <tr>
-                        <td>asna@gmail.com</td>
-                        <td style={{ textAlign: 'justify' }}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit, eum dolorem illo ad, quam vel consectetur praesentium sapiente architecto aperiam sunt quod laboriosam iste quasi eos obcaecati excepturi quibusdam fugiat.</td>
-                        <td>3</td>
+                      {allReviews?.length > 0 ? 
+                      allReviews?.map( (item , index) => (
+
+                        <tr key={index}>
+                        <td>{item?.userMail}</td>
+                        <td style={{ textAlign: 'justify' }}>{item?.comment}</td>
+                        <td>{item?.rating}</td>
                       </tr>
 
-                      <p className='text-danger mt-4'>No Review Yet!!!</p>
+                      )) 
+                        
+                        :
+
+                      <p className='text-danger mt-4'>No Review Yet!!!</p>}
 
 
                     </tbody>
@@ -189,7 +235,7 @@ function Viewbook() {
       </div>
 
       <ToastContainer theme='colored' position='top-center' autoClose={2000} />
-      
+
 
 
     </>
